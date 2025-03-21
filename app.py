@@ -1,9 +1,7 @@
 from flask import Flask, request, jsonify, Response
 import sqlite3
-import json
 
 app = Flask(__name__)
-
 
 @app.route('/')
 def vnw():
@@ -22,28 +20,26 @@ def init_db():
             )
         ''')
 
-
 init_db()
+
 
 @app.route("/livros", methods = ["GET"])
 def listar_livros():
     with sqlite3.connect("database.db") as conn:
-        cursor = conn.execute(f"""
-        SELECT * FROM LIVROS
-        """)
-        livros = [
-            {
-                "id": row[0],
-                "titulo": row[1],
-                "categoria": row[2],
-                "autor": row[3],
-                "imagem_url": row[4]
-            }
-            for row in cursor.fetchall()
-        ]
+        livros = conn.execute(f"SELECT * FROM LIVROS").fetchall()
+        livros_formatados = []
 
-    # Usamos Response para personalizar a saída e manter a ordem
-    return Response(json.dumps(livros, ensure_ascii=False), mimetype="application/json"), 200
+        for item in livros:
+            dicionario_livros = {
+                    "id": item[0],
+                    "titulo": item[1],
+                    "categoria": item[2],
+                    "autor": item[3],
+                    "imagem_url": item[4]
+            }
+            livros_formatados.append(dicionario_livros)  
+
+    return jsonify(livros_formatados),200
 
 
 @app.route("/doar", methods=["POST"])
