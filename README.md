@@ -6,7 +6,7 @@ Esta é uma API simples feita com Flask e SQLite para fins de estudo na escola V
 
 1. Faça o clone do repositório
 ```bash
-git clone <LINK_DO_REPOSITORIO>
+git clone https://github.com/Xande-Alves/API_livros.git
 cd nome-do-projeto
 ```
 
