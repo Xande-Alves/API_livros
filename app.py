@@ -1,7 +1,10 @@
 from flask import Flask, request, jsonify, Response
 import sqlite3
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
+
 
 @app.route('/')
 def vnw():
@@ -20,10 +23,11 @@ def init_db():
             )
         ''')
 
+
 init_db()
 
 
-@app.route("/livros", methods = ["GET"])
+@app.route("/livros", methods=["GET"])
 def listar_livros():
     with sqlite3.connect("database.db") as conn:
         livros = conn.execute(f"SELECT * FROM LIVROS").fetchall()
@@ -31,15 +35,15 @@ def listar_livros():
 
         for item in livros:
             dicionario_livros = {
-                    "id": item[0],
-                    "titulo": item[1],
-                    "categoria": item[2],
-                    "autor": item[3],
-                    "imagem_url": item[4]
+                "id": item[0],
+                "titulo": item[1],
+                "categoria": item[2],
+                "autor": item[3],
+                "imagem_url": item[4]
             }
-            livros_formatados.append(dicionario_livros)  
+            livros_formatados.append(dicionario_livros)
 
-    return jsonify(livros_formatados),200
+    return jsonify(livros_formatados), 200
 
 
 @app.route("/doar", methods=["POST"])
@@ -54,7 +58,7 @@ def doar():
     imagem_url = dados.get("imagem_url")  # Obtém a URL da imagem do livro
 
     if not titulo or not categoria or not autor or not imagem_url:
-        return jsonify({"erro":"Todos os campos são obrigatórios"}), 400
+        return jsonify({"erro": "Todos os campos são obrigatórios"}), 400
 
     with sqlite3.connect("database.db") as conn:
         conn.execute(f"""
@@ -64,7 +68,7 @@ def doar():
 
     conn.commit()
 
-    return jsonify({"mensagem":"Livro cadastrado com sucesso"}), 201
+    return jsonify({"mensagem": "Livro cadastrado com sucesso"}), 201
 
 
 if __name__ == "__main__":
