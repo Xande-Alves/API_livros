@@ -78,4 +78,8 @@ O endpoint /livros retorna todos os livros cadastrados na API.
 - SQLite
 - Flask-CORS
 
+<<<<<<< HEAD
 ---
+=======
+---
+>>>>>>> aa8c57f87dd927115b2df810464ada07bd685c92
