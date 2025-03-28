@@ -3,6 +3,7 @@ import sqlite3
 from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
 @app.route('/')
 def vnw():
@@ -20,7 +21,6 @@ def init_db():
                 imagem_url TEXT NOT NULL
             )
         ''')
-
 
 init_db()
 
